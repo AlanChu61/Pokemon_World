@@ -7,3 +7,7 @@ def home(request):
 
 def about(request):
     return render(request, 'about.html', )
+
+
+def pokemons_view(request):
+    return render(request, 'pokemons/pokemons_view.html', )
