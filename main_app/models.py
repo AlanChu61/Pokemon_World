@@ -13,10 +13,10 @@ class Player(models.Model):
 
 class Pokemon(models.Model):
     name = models.CharField(max_length=100)
-    img = models.CharField(max_length=100)
+    img = models.CharField(max_length=200)
     level = models.IntegerField()
     # skills = models.charField(Skill)
-    owner = models.ForeignKey(Player, on_delete=models.CASCADE)
+    # owner = models.ForeignKey(Player, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
