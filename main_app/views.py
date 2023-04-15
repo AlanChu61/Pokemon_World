@@ -1,6 +1,7 @@
 import requests
-from django.shortcuts import render
 from .models import Pokemon
+from django.shortcuts import render, redirect
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 
 def home(request):
@@ -21,9 +22,16 @@ def pokemon_detail(request, pokemon_id):
     return render(request, 'pokemons/pokemon_detail.html', {'pokemon': pokemon, 'title': 'Pokemon Detail'})
 
 
+class PokemonCreate(CreateView):
+    model = Pokemon
+    fields = '__all__'
+    success_url = '/pokemons/'
+    template_name = 'pokemons/pokemon_form.html'
+
+
 def fetch_pokemons(request):
     pokemons = []
-    for i in range(1, 10):
+    for i in range(1, 5):
         url = f'https://pokeapi.co/api/v2/pokemon/{i}'
         response = requests.get(url)
         data = response.json()

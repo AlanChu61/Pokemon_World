@@ -5,7 +5,17 @@
 {% block content %}
 {% for pokemon in pokemons %}
 <img src="{{ pokemon.img }}" alt="{{pokemon.name}}'s" width="100" height="100">
-Name:{{pokemon.name}}
-ID:{{pokemon.id}}
+
+
+<form action="/pokemons/create/" method="POST">
+    {% csrf_token %}
+    <table>
+        #{{pokemon.id}} {{pokemon.name}}
+    </table>
+    <input type="hidden" name="pokemon_id" value="{{pokemon.id}}">
+    <input type="hidden" name="pokemon_img" value="{{pokemon.img}}">
+    <input type="hidden" name="pokemon_name" value="{{pokemon.name}}">
+    <input type="submit" value="Save" class="btn blue" />
+  </form>
 {% endfor %}
 {% endblock %}
