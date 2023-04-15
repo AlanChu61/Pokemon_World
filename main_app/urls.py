@@ -17,4 +17,5 @@ urlpatterns = [
 
     path('pokemons/<int:pokemon_id>/add_feeding/',
          views.add_feeding, name='add_feeding'),
+    path('accounts/signup/', views.signup, name='signup'),
 ]

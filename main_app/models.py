@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 class Player(models.Model):
     name = models.CharField(max_length=100)
-    createdBy = models.ForeignKey(User, on_delete=models.CASCADE)
+    ownedby = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -16,7 +16,7 @@ class Pokemon(models.Model):
     img = models.CharField(max_length=250)
     level = models.IntegerField(default=5)
     # skills = models.charField(Skill)
-    # owner = models.ForeignKey(Player, on_delete=models.CASCADE)
+    # ownedby = models.ForeignKey(Player, on_delete=models.CASCADE)
     ready_to_level_up = models.BooleanField(default=True)
 
     def __str__(self):

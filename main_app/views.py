@@ -3,6 +3,8 @@ from .models import Pokemon
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .forms import FeedingForm, CapturePokemonForm
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
 
 
 def home(request):
@@ -38,8 +40,9 @@ def capture_pokemon(request, pokemon_id):
     id = captured_pokemon['id']
     level = 5
     img = captured_pokemon['img']
+    # ownedby = request.user
     new_pokemon = CapturePokemonForm(
-        {'name': name, 'level': level, 'img': img})
+        {'name': name, 'level': level, 'img': img, 'ownedby': ownedby})
     new_pokemon.save()
     return redirect('fetch_pokemons')
 
@@ -78,3 +81,18 @@ def add_feeding(request, pokemon_id):
         new_feeding.pokemon_id = pokemon_id
         new_feeding.save()
     return redirect('pokemon_detail', pokemon_id=pokemon_id)
+
+
+def signup(request):
+    error_message = ''
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('home')
+        else:
+            error_message = 'Invalid sign up - try again'
+    form = UserCreationForm()
+    context = {'form': form, 'error_message': error_message}
+    return render(request, 'registration/signup.html', context)

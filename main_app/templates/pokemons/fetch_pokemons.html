@@ -3,17 +3,20 @@
 <title> {{title}}| Pokemon World</title>
 {% endblock %}
 {% block content %}
-{% for pokemon in pokemons %}
-<img src="{{ pokemon.img }}" alt="{{pokemon.name}}'s" width="100" height="100">
+{% if pokemons %}
+  {% for pokemon in pokemons %}
+  <img src="{{ pokemon.img }}" alt="{{pokemon.name}}'s" width="100" height="100">
+  <form action="{% url 'capture_pokemon' pokemon.id %}" method="POST">
+      {% csrf_token %}
+      <table>
+          #{{pokemon.id}} {{pokemon.name}}
+      </table>
+      <input type="hidden" name="pokemon_id" value="{{ pokemon.id }}">
+      <input type="submit" value="Caputed" class="btn green" />
+    </form>
+  {% endfor %}
+{% else %}
+<div>Loading</div>
+{% endif %}
 
-
-<form action="{% url 'capture_pokemon' pokemon.id %}" method="POST">
-    {% csrf_token %}
-    <table>
-        #{{pokemon.id}} {{pokemon.name}}
-    </table>
-    <input type="hidden" name="pokemon_id" value="{{ pokemon.id }}">
-    <input type="submit" value="Save" class="btn blue" />
-  </form>
-{% endfor %}
 {% endblock %}
