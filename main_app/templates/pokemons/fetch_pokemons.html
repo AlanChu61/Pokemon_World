@@ -7,14 +7,12 @@
 <img src="{{ pokemon.img }}" alt="{{pokemon.name}}'s" width="100" height="100">
 
 
-<form action="/pokemons/create/" method="POST">
+<form action="{% url 'capture_pokemon' pokemon.id %}" method="POST">
     {% csrf_token %}
     <table>
         #{{pokemon.id}} {{pokemon.name}}
     </table>
-    <input type="hidden" name="pokemon_id" value="{{pokemon.id}}">
-    <input type="hidden" name="pokemon_img" value="{{pokemon.img}}">
-    <input type="hidden" name="pokemon_name" value="{{pokemon.name}}">
+    <input type="hidden" name="pokemon_id" value="{{ pokemon.id }}">
     <input type="submit" value="Save" class="btn blue" />
   </form>
 {% endfor %}

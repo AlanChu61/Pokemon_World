@@ -9,6 +9,11 @@ class FeedingForm(ModelForm):
         fields = ('date', 'meal')
 
 
+class CapturePokemonForm(ModelForm):
+    class Meta:
+        model = Pokemon
+        fields = ('name', 'level', 'img')
+
 # class LevelUpForm(ModelForm):
 #     class Meta:
 #         model = Pokemon

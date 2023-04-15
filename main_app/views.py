@@ -2,7 +2,7 @@ import requests
 from .models import Pokemon
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .forms import FeedingForm
+from .forms import FeedingForm, CapturePokemonForm
 
 
 def home(request):
@@ -30,6 +30,20 @@ def level_up(request, pokemon_id):
         return redirect('pokemon_detail', pokemon_id=pokemon.id)
 
 
+def capture_pokemon(request, pokemon_id):
+
+    capture_pokemon_id = request.POST.get('pokemon_id')
+    captured_pokemon = fetch_pokemon(capture_pokemon_id)
+    name = captured_pokemon['name']
+    id = captured_pokemon['id']
+    level = 5
+    img = captured_pokemon['img']
+    new_pokemon = CapturePokemonForm(
+        {'name': name, 'level': level, 'img': img})
+    new_pokemon.save()
+    return redirect('fetch_pokemons')
+
+
 class PokemonCreate(CreateView):
     model = Pokemon
     fields = '__all__'
@@ -37,17 +51,22 @@ class PokemonCreate(CreateView):
     template_name = 'pokemons/pokemon_form.html'
 
 
+def fetch_pokemon(id):
+    url = f'https://pokeapi.co/api/v2/pokemon/{id}'
+    response = requests.get(url)
+    data = response.json()
+    pokemon = {
+        'name': data['forms'][0]['name'].capitalize(),
+        'id': data['id'],
+        'img': data['sprites']['other']['official-artwork']['front_default'],
+    }
+    return pokemon
+
+
 def fetch_pokemons(request):
     pokemons = []
-    for i in range(1, 5):
-        url = f'https://pokeapi.co/api/v2/pokemon/{i}'
-        response = requests.get(url)
-        data = response.json()
-        pokemon = {
-            'name': data['forms'][0]['name'].capitalize(),
-            'id': data['id'],
-            'img': data['sprites']['other']['official-artwork']['front_default'],
-        }
+    for i in range(1, 30):
+        pokemon = fetch_pokemon(i)
         pokemons.append(pokemon)
     return render(request, 'pokemons/fetch_pokemons.html', {'pokemons': pokemons, 'title': 'Fetch Pokemons'})
 
