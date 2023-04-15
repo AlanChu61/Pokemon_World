@@ -9,4 +9,6 @@ urlpatterns = [
     path('pokemons/<int:pokemon_id>/',
          views.pokemon_detail, name='pokemon_detail'),
     path('pokemons/create/', views.PokemonCreate.as_view(), name='pokemon_create'),
+    path('pokemons/<int:pk>/add_feeding/',
+         views.add_feeding, name='add_feeding'),
 ]

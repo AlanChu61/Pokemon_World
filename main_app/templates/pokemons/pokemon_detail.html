@@ -2,3 +2,52 @@
 {% block title %}
 <title>{{pokemon.name}} | Pokemon World</title>
 {% endblock %}
+
+{% block content%}
+<h1>{{pokemon.name}}</h1>
+<div class="row">
+    <div class="col s6">
+        <img src="{{pokemon.img}}" alt="{{pokemon.name}}'s image" width="300" height="300">
+        <p>Name: {{pokemon.name}}</p>
+        <p>Level: {{pokemon.level}}</p>
+        <p>More details: TBD</p>
+    </div>
+    <div class="col s6">
+        <form action="{% url 'add_feeding' pokemon.id %}" method="post">
+          {% csrf_token %} {{feeding_form.as_p}}
+          <input type="submit" value="Add Feeding" class="btn blue" />
+        </form>
+        <table class="striped">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Meal</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for feeding in cat.feeding_set.all %}
+              <tr>
+                <td>{{feeding.date}}</td>
+                <td>{{feeding.get_meal_display}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+
+</div>
+<script>
+    // Dom Elemenmnt ref
+    const dataPickerEl = document.getElementById("id_date");
+    const fromSelectEl = document.getElementById("id_meal");
+    // Mateirlize init for Datapicker and FormSelect
+    M.Datepicker.init(dataPickerEl, {
+      format: "yyyy-mm-dd",
+      defaultDate: new Date(),
+      setDefaultDate: true,
+      autoClose: true,
+    });
+    M.FormSelect.init(fromSelectEl);
+  </script>
+{% endblock %}

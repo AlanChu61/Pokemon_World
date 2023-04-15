@@ -2,6 +2,7 @@ import requests
 from .models import Pokemon
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from .forms import FeedingForm
 
 
 def home(request):
@@ -42,3 +43,12 @@ def fetch_pokemons(request):
         }
         pokemons.append(pokemon)
     return render(request, 'pokemons/fetch_pokemons.html', {'pokemons': pokemons, 'title': 'Fetch Pokemons'})
+
+
+def add_feeding(request, pokemon_id):
+    form = FeedingForm(request.POST)
+    if form.is_valid():
+        new_feeding = form.save(commit=False)
+        new_feeding.pokemon_id = pokemon_id
+        new_feeding.save()
+    return redirect('pokemon_detail', pokemon_id=pokemon_id)
