@@ -23,6 +23,13 @@ def pokemon_detail(request, pokemon_id):
     return render(request, 'pokemons/pokemon_detail.html', {'pokemon': pokemon, 'title': 'Pokemon Detail'})
 
 
+def level_up(request, pokemon_id):
+    pokemon = Pokemon.objects.get(id=pokemon_id)
+    if request.method == 'POST':
+        pokemon.level_up()
+        return redirect('pokemon_detail', pokemon_id=pokemon.id)
+
+
 class PokemonCreate(CreateView):
     model = Pokemon
     fields = '__all__'

@@ -14,16 +14,29 @@ class Player(models.Model):
 class Pokemon(models.Model):
     name = models.CharField(max_length=100)
     img = models.CharField(max_length=250)
-    level = models.IntegerField()
+    level = models.IntegerField(default=5)
     # skills = models.charField(Skill)
     # owner = models.ForeignKey(Player, on_delete=models.CASCADE)
-    # ready_to_levelup = models.BooleanField(default=False)
+    ready_to_level_up = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
 
-    def is_levelup(self):
-        return self.feeding_set.filter(date=date.today()).count() >= 3
+    def is_level_up(self):
+        meals = self.feeding_set.filter(date=date.today())
+        good_eat = 0
+        for item in meals:
+            if item.meal == "B" or item.meal == "L" or item.meal == "D":
+                good_eat += 1
+            if item.meal == "S" or item.meal == "T":
+                good_eat += 0.5
+        if good_eat >= 3:
+            self.ready_to_level_up = True
+
+    def level_up(self):
+        self.level += 1
+        self.ready_to_level_up = False
+        self.save()
 
 
 class Feeding(models.Model):

@@ -9,7 +9,14 @@
     <div class="col s6">
         <img src="{{pokemon.img}}" alt="{{pokemon.name}}'s image" width="300" height="300">
         <p>Name: {{pokemon.name}}</p>
-        <p>Level: {{pokemon.level}}</p>
+        <p>Level: {{pokemon.level}}</a>
+          {% if pokemon.ready_to_level_up %}
+          <form action="{% url 'pokemon_level_up' pokemon.id %}" method="post">
+            {% csrf_token %}
+            <span class="badge green">Ready to Level Up</span>
+            <button type="submit">&uarr;Level Up</button>
+        {% endif %}
+      </form></p>
         <p>More details: TBD</p>
     </div>
     <div class="col s6">
