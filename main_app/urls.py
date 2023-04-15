@@ -10,6 +10,8 @@ urlpatterns = [
     path('pokemons/<int:pokemon_id>/',
          views.pokemon_detail, name='pokemon_detail'),
     path('pokemons/create/', views.PokemonCreate.as_view(), name='pokemon_create'),
+    path('pokemons/<int:pk>/release',
+         views.PokemonRelease.as_view(), name='pokemon_release'),
     path('pokemons/<int:pokemon_id>/capture/',
          views.capture_pokemon, name='capture_pokemon'),
     path('pokemon/<int:pokemon_id>/pokemon_level_up/',
@@ -18,4 +20,5 @@ urlpatterns = [
     path('pokemons/<int:pokemon_id>/add_feeding/',
          views.add_feeding, name='add_feeding'),
     path('accounts/signup/', views.signup, name='signup'),
+
 ]

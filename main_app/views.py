@@ -54,6 +54,12 @@ class PokemonCreate(CreateView):
     template_name = 'pokemons/pokemon_form.html'
 
 
+class PokemonRelease(DeleteView):
+    model = Pokemon
+    success_url = '/pokemons/'
+    template_name = 'pokemons/pokemon_confirm_delete.html'
+
+
 def fetch_pokemon(id):
     url = f'https://pokeapi.co/api/v2/pokemon/{id}'
     response = requests.get(url)

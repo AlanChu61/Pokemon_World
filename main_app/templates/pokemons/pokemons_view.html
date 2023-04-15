@@ -13,7 +13,12 @@
             </a>
                 <div class="card-title">
                 <p>Name: {{ pokemon.name }} </p>
-                <p>Level: {{ pokemon.level }}</p>   
+                <p>Level: {{ pokemon.level }}</p>
+                <p>Owned Since: </p>
+                <div class="card-action">
+                    <a href="">Storage</a>
+                    <a href="{% url 'pokemon_release' pokemon.id %}">Release</a>
+                  </div>
           </div>
     </div>
 </div>
