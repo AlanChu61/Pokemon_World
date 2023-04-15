@@ -17,11 +17,12 @@ class Pokemon(models.Model):
     level = models.IntegerField()
     # skills = models.charField(Skill)
     # owner = models.ForeignKey(Player, on_delete=models.CASCADE)
+    # ready_to_levelup = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
 
-    def fed_for_today(self):
+    def is_levelup(self):
         return self.feeding_set.filter(date=date.today()).count() >= 3
 
 
@@ -35,11 +36,11 @@ class Feeding(models.Model):
     )
     date = models.DateField("Feeding Date")
     meal = models.CharField(
-        max_length=1, choices=MEALS, default=MEALS[0][0], verbose_name="Meal Type")
+        max_length=1, choices=MEALS, default=MEALS[-1][0], verbose_name="Meal Type")
     pokemon = models.ForeignKey(Pokemon, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.get_meal_display()} on {self.date}"
 
-#     class Meta:
-#         ordering = ["-date"]
+    class Meta:
+        ordering = ["-date"]

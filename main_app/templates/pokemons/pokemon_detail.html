@@ -13,10 +13,12 @@
         <p>More details: TBD</p>
     </div>
     <div class="col s6">
-        <form action="{% url 'add_feeding' pokemon.id %}" method="post">
-          {% csrf_token %} {{feeding_form.as_p}}
-          <input type="submit" value="Add Feeding" class="btn blue" />
-        </form>
+      <form action="{% url 'add_feeding' pokemon.id %}" method="post">
+        {% csrf_token %}
+        <p>Don't know why from not showup!</p>
+        {{ feeding_form.as_p }}
+        <input type="submit" value="Add Feeding" class="btn red" />
+    </form>    
         <table class="striped">
             <thead>
               <tr>
@@ -25,7 +27,7 @@
               </tr>
             </thead>
             <tbody>
-              {% for feeding in cat.feeding_set.all %}
+              {% for feeding in pokemon.feeding_set.all %}
               <tr>
                 <td>{{feeding.date}}</td>
                 <td>{{feeding.get_meal_display}}</td>
@@ -34,20 +36,8 @@
             </tbody>
           </table>
         </div>
-
-
 </div>
-<script>
-    // Dom Elemenmnt ref
-    const dataPickerEl = document.getElementById("id_date");
-    const fromSelectEl = document.getElementById("id_meal");
-    // Mateirlize init for Datapicker and FormSelect
-    M.Datepicker.init(dataPickerEl, {
-      format: "yyyy-mm-dd",
-      defaultDate: new Date(),
-      setDefaultDate: true,
-      autoClose: true,
-    });
-    M.FormSelect.init(fromSelectEl);
-  </script>
+<div>
+  <h2>Skills</h2>
+</div>
 {% endblock %}
