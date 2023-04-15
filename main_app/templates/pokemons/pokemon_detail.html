@@ -18,6 +18,7 @@
         {% endif %}
       </form></p>
         <p>More details: TBD</p>
+        <p>Owned By: {{ user }}</p>
     </div>
     <div class="col s6">
       <form action="{% url 'add_feeding' pokemon.id %}" method="post">

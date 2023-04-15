@@ -15,8 +15,9 @@ class Pokemon(models.Model):
     name = models.CharField(max_length=100)
     img = models.CharField(max_length=250)
     level = models.IntegerField(default=5)
+    ownedby = models.ForeignKey(User, on_delete=models.CASCADE)
     # skills = models.charField(Skill)
-    # ownedby = models.ForeignKey(Player, on_delete=models.CASCADE)
+
     ready_to_level_up = models.BooleanField(default=True)
 
     def __str__(self):

@@ -16,13 +16,13 @@ def about(request):
 
 
 def pokemons_view(request):
-    pokemons = Pokemon.objects.all()
+    pokemons = Pokemon.objects.filter(ownedby=request.user)
     return render(request, 'pokemons/pokemons_view.html', {'pokemons': pokemons, 'title': 'View Your Pokemons'})
 
 
 def pokemon_detail(request, pokemon_id):
     pokemon = Pokemon.objects.get(id=pokemon_id)
-    return render(request, 'pokemons/pokemon_detail.html', {'pokemon': pokemon, 'title': 'Pokemon Detail'})
+    return render(request, 'pokemons/pokemon_detail.html', {'pokemon': pokemon, 'title': 'Pokemon Detail', 'user': request.user})
 
 
 def level_up(request, pokemon_id):
@@ -40,7 +40,7 @@ def capture_pokemon(request, pokemon_id):
     id = captured_pokemon['id']
     level = 5
     img = captured_pokemon['img']
-    # ownedby = request.user
+    ownedby = request.user
     new_pokemon = CapturePokemonForm(
         {'name': name, 'level': level, 'img': img, 'ownedby': ownedby})
     new_pokemon.save()
