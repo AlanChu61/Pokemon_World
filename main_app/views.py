@@ -5,16 +5,18 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .forms import FeedingForm, CapturePokemonForm
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 
 
 def home(request):
-    return render(request, 'home.html', )
+    return render(request, 'home.html', {'title': 'HomePage'})
 
 
 def about(request):
-    return render(request, 'about.html', )
+    return render(request, 'about.html', {'title': 'AboutPage'})
 
 
+@login_required
 def pokemons_view(request):
     pokemons = Pokemon.objects.filter(ownedby=request.user)
     return render(request, 'pokemons/pokemons_view.html', {'pokemons': pokemons, 'title': 'View Your Pokemons'})
@@ -32,8 +34,20 @@ def level_up(request, pokemon_id):
         return redirect('pokemon_detail', pokemon_id=pokemon.id)
 
 
-def capture_pokemon(request, pokemon_id):
+def pokemon_pocket_box(request, pokemon_id):
+    pokemon = Pokemon.objects.get(id=pokemon_id)
+    print(pokemon.name)
+    print(pokemon.in_pocket)
+    if request.method == 'POST':
+        if pokemon.in_pocket:
+            pokemon.in_pocket = False
+        else:
+            pokemon.in_pocket = True
+        pokemon.save()
+        return redirect('pokemons_view')
 
+
+def capture_pokemon(request, pokemon_id):
     capture_pokemon_id = request.POST.get('pokemon_id')
     captured_pokemon = fetch_pokemon(capture_pokemon_id)
     name = captured_pokemon['name']
@@ -41,8 +55,10 @@ def capture_pokemon(request, pokemon_id):
     level = 5
     img = captured_pokemon['img']
     ownedby = request.user
+    in_pocket = True if len(
+        Pokemon.objects.filter(in_pocket=True)) < 6 else False
     new_pokemon = CapturePokemonForm(
-        {'name': name, 'level': level, 'img': img, 'ownedby': ownedby})
+        {'name': name, 'level': level, 'img': img, 'ownedby': ownedby, 'ownedat': ownedat, 'in_pocket': in_pocket})
     new_pokemon.save()
     return redirect('fetch_pokemons')
 
@@ -81,6 +97,7 @@ def fetch_pokemons(request):
 
 
 def add_feeding(request, pokemon_id):
+
     form = FeedingForm(request.POST)
     if form.is_valid():
         new_feeding = form.save(commit=False)

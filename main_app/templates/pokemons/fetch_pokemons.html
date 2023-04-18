@@ -3,7 +3,6 @@
 <title> {{title}}| Pokemon World</title>
 {% endblock %}
 {% block content %}
-{% if pokemons %}
   {% for pokemon in pokemons %}
   <img src="{{ pokemon.img }}" alt="{{pokemon.name}}'s" width="100" height="100">
   <form action="{% url 'capture_pokemon' pokemon.id %}" method="POST">
@@ -15,8 +14,5 @@
       <input type="submit" value="Caputed" class="btn green" />
     </form>
   {% endfor %}
-{% else %}
-<div>Loading</div>
-{% endif %}
 
 {% endblock %}

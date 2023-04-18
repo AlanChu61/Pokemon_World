@@ -6,14 +6,13 @@ from .models import Pokemon
 class FeedingForm(ModelForm):
     class Meta:
         model = Feeding
-        fields = ('date', 'meal')
+        fields = ("__all__")
 
 
 class CapturePokemonForm(ModelForm):
     class Meta:
         model = Pokemon
-        fields = ('name', 'level', 'img', 'ownedby')
-
+        fields = ('name', 'level', 'img', 'ownedby', 'in_pocket')
 # class LevelUpForm(ModelForm):
 #     class Meta:
 #         model = Pokemon

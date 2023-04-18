@@ -4,7 +4,7 @@ from . models import Pokemon
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('', views.about, name='about'),
+    path('about/', views.about, name='about'),
     path('fetch_pokemons/', views.fetch_pokemons, name='fetch_pokemons'),
     path('pokemons/', views.pokemons_view, name='pokemons_view'),
     path('pokemons/<int:pokemon_id>/',
@@ -16,6 +16,8 @@ urlpatterns = [
          views.capture_pokemon, name='capture_pokemon'),
     path('pokemon/<int:pokemon_id>/pokemon_level_up/',
          views.level_up, name='pokemon_level_up'),
+    path('pokemon/<int:pokemon_id>/pokemon_pocket_box/',
+         views.pokemon_pocket_box, name='pokemon_pocket_box'),
 
     path('pokemons/<int:pokemon_id>/add_feeding/',
          views.add_feeding, name='add_feeding'),

@@ -4,8 +4,9 @@
 {% endblock %}
 {% block content %}
 <body>
-   <h1>Pockets(onlys 6 here)</h1>
+   <h1>Pockets</h1>
    {% for pokemon in pokemons %}
+   {% if pokemon.in_pocket %}
     <div class="card">
         <div class="card-content">
             <a href="{% url 'pokemon_detail' pokemon.id %}">
@@ -14,18 +15,38 @@
                 <div class="card-title">
                 <p>Name: {{ pokemon.name }} </p>
                 <p>Level: {{ pokemon.level }}</p>
-                <p>Owned Since: </p>
+                <p>Owned Since: {{pokemon.ownedat}} </p>
                 <div class="card-action">
-                    <a href="">Storage</a>
+                    <form action="{% url 'pokemon_pocket_box' pokemon.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Storage</button>
+                    </form>
+                    <a href="{% url 'pokemon_release' pokemon.id %}">Release</a>
+                  </div>
+          </div>
+    </div>
+</div>{% endif %}{% endfor %}
+    <h1>Box</h1>
+    {% for pokemon in pokemons %}
+   {% if not pokemon.in_pocket %}<div class="card">
+        <div class="card-content">
+            <a href="{% url 'pokemon_detail' pokemon.id %}">
+                <img src="{{ pokemon.img }}" alt="{{pokemon.name}}'s" width="100" height="100">
+            </a>
+                <div class="card-title">
+                <p>Name: {{ pokemon.name }} </p>
+                <p>Level: {{ pokemon.level }}</p>
+                <p>Owned Since: {{pokemon.ownedat}} </p>
+                <div class="card-action">
+                    <form action="{% url 'pokemon_pocket_box' pokemon.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">WithMe</button>
+                    </form>
                     <a href="{% url 'pokemon_release' pokemon.id %}">Release</a>
                   </div>
           </div>
     </div>
 </div>
-    {% endfor %}
-    <h1>Box</h1>
-    <div class="card">
-        Box(at most 30 pokemons here)
-    </div>
+    {% endif %}{% endfor %}
 </body>
 {% endblock %}

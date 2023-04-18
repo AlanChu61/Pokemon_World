@@ -5,6 +5,7 @@
 
 {% block content%}
 <h1>{{pokemon.name}}</h1>
+
 <div class="row">
     <div class="col s6">
         <img src="{{pokemon.img}}" alt="{{pokemon.name}}'s image" width="300" height="300">
@@ -18,10 +19,12 @@
         {% endif %}
       </form></p>
         <p>More details: TBD</p>
+        <p>Ready to Evolve:?????</p>
         <p>Owned By: {{ user }}</p>
+        <p>Owned Since: {{pokemon.ownedat}}</p>
     </div>
     <div class="col s6">
-      <form action="{% url 'add_feeding' pokemon.id %}" method="post">
+      <form action="{% url 'add_feeding' pokemon.id %}" method="POST">
         {% csrf_token %}
         <p>Don't know why from not showup!</p>
         {{ feeding_form.as_p }}
