@@ -16,20 +16,23 @@
             {% csrf_token %}
             <span class="badge green">Ready to Level Up</span>
             <button type="submit">&uarr;Level Up</button>
-        {% endif %}
-      </form></p>
+        
+      </form>
+      {% else %}
+      <span class="badge orange">Already Level Up today</span></p>{% endif %}
         <p>More details: TBD</p>
-        <p>Ready to Evolve:?????</p>
+        <p>Evolve to:?????</p>
         <p>Owned By: {{ user }}</p>
         <p>Owned Since: {{pokemon.ownedat}}</p>
     </div>
     <div class="col s6">
+      {% if not pokemon.isleveled %}
       <form action="{% url 'add_feeding' pokemon.id %}" method="POST">
         {% csrf_token %}
-        <p>Don't know why from not showup!</p>
         {{ feeding_form.as_p }}
         <input type="submit" value="Add Feeding" class="btn red" />
-    </form>    
+    </form>   
+    {% endif %} 
         <table class="striped">
             <thead>
               <tr>
@@ -51,4 +54,15 @@
 <div>
   <h2>Skills</h2>
 </div>
+<script>
+  const dataPickerEl = document.getElementById("id_date");
+  const fromSelectEl = document.getElementById("id_meal");
+  M.Datepicker.init(dataPickerEl, {
+    format: "yyyy-mm-dd",
+    defaultDate: new Date(),
+    setDefaultDate: true,
+    autoClose: true,
+  });
+  M.FormSelect.init(fromSelectEl);
+</script>
 {% endblock %}

@@ -23,8 +23,9 @@ def pokemons_view(request):
 
 
 def pokemon_detail(request, pokemon_id):
+    feeding_form = FeedingForm()
     pokemon = Pokemon.objects.get(id=pokemon_id)
-    return render(request, 'pokemons/pokemon_detail.html', {'pokemon': pokemon, 'title': 'Pokemon Detail', 'user': request.user})
+    return render(request, 'pokemons/pokemon_detail.html', {'pokemon': pokemon, 'title': 'Pokemon Detail', 'user': request.user, 'feeding_form': feeding_form})
 
 
 def level_up(request, pokemon_id):
@@ -45,6 +46,15 @@ def pokemon_pocket_box(request, pokemon_id):
             pokemon.in_pocket = True
         pokemon.save()
         return redirect('pokemons_view')
+
+
+def check_evolve(pokemon_id):
+    url = f'https://pokeapi.co/api/v2/evolution-chain/{id}'
+    response = requests.get(url)
+    data = response.json()
+    evole_trigger = data['chain']['evolves_to'][0]['evolution_details'][0]['trigger']['name']
+    min_level = data['chain']['evolves_to'][0]['evolution_details'][0]['min_level']
+    print(evole_trigger, min_level)
 
 
 def capture_pokemon(request, pokemon_id):
@@ -97,12 +107,13 @@ def fetch_pokemons(request):
 
 
 def add_feeding(request, pokemon_id):
-
     form = FeedingForm(request.POST)
     if form.is_valid():
         new_feeding = form.save(commit=False)
         new_feeding.pokemon_id = pokemon_id
         new_feeding.save()
+        pokemon = Pokemon.objects.get(id=pokemon_id)
+        pokemon.is_level_up()
     return redirect('pokemon_detail', pokemon_id=pokemon_id)
 
 

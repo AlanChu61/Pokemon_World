@@ -17,6 +17,7 @@ class Pokemon(models.Model):
     level = models.IntegerField(default=5)
     ownedby = models.ForeignKey(User, on_delete=models.CASCADE)
     ownedat = models.DateField(auto_now_add=True)
+    is_leveled = models.BooleanField(default=False)
     in_pocket = models.BooleanField(default=True)
     # skills = models.charField(Skill)
 
@@ -35,6 +36,8 @@ class Pokemon(models.Model):
                 good_eat += 0.5
         if good_eat >= 3:
             self.ready_to_level_up = True
+            good_eat = 0
+            self.save()
 
     def level_up(self):
         self.level += 1
