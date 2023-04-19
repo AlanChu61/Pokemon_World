@@ -49,26 +49,34 @@ def pokemon_pocket_box(request, pokemon_id):
 
 
 def check_evolve(pokemon_id):
-    url = f'https://pokeapi.co/api/v2/evolution-chain/{id}'
+    url = f'https://pokeapi.co/api/v2/pokemon-species/{pokemon_id}'
     response = requests.get(url)
-    data = response.json()
-    evole_trigger = data['chain']['evolves_to'][0]['evolution_details'][0]['trigger']['name']
+    data = response.json().get('evolution_chain').get('url')
+    data = requests.get(data).json()
+    item = None
     min_level = data['chain']['evolves_to'][0]['evolution_details'][0]['min_level']
-    print(evole_trigger, min_level)
+    if min_level != None:
+        evole_to = data['chain']['evolves_to'][0]['species']['name']
+    else:
+        evole_to = data['chain']['evolves_to'][0]['evolves_to'][0]['species']['name']
+        item = data['chain']['evolves_to'][0]['evolves_to'][0]['evolution_details'][0]['item']['name']
+
+    print(min_level, evole_to, item)
+    return {'evole_to': evole_to, 'min_level': min_level, 'item': item}
 
 
 def capture_pokemon(request, pokemon_id):
     capture_pokemon_id = request.POST.get('pokemon_id')
     captured_pokemon = fetch_pokemon(capture_pokemon_id)
     name = captured_pokemon['name']
-    id = captured_pokemon['id']
     level = 5
     img = captured_pokemon['img']
+    evolve_chains = check_evolve(capture_pokemon_id)
     ownedby = request.user
     in_pocket = True if len(
         Pokemon.objects.filter(in_pocket=True)) < 6 else False
     new_pokemon = CapturePokemonForm(
-        {'name': name, 'level': level, 'img': img, 'ownedby': ownedby, 'ownedat': ownedat, 'in_pocket': in_pocket})
+        {'pokemon_id': capture_pokemon_id, 'name': name, 'level': level, 'img': img, 'ownedby': ownedby,  'in_pocket': in_pocket, "evolve_chains": evolve_chains})
     new_pokemon.save()
     return redirect('fetch_pokemons')
 
@@ -94,13 +102,14 @@ def fetch_pokemon(id):
         'name': data['forms'][0]['name'].capitalize(),
         'id': data['id'],
         'img': data['sprites']['other']['official-artwork']['front_default'],
+        # 'moves': data['moves'][0],
     }
     return pokemon
 
 
 def fetch_pokemons(request):
     pokemons = []
-    for i in range(1, 30):
+    for i in range(1, 26):
         pokemon = fetch_pokemon(i)
         pokemons.append(pokemon)
     return render(request, 'pokemons/fetch_pokemons.html', {'pokemons': pokemons, 'title': 'Fetch Pokemons'})
@@ -112,8 +121,7 @@ def add_feeding(request, pokemon_id):
         new_feeding = form.save(commit=False)
         new_feeding.pokemon_id = pokemon_id
         new_feeding.save()
-        pokemon = Pokemon.objects.get(id=pokemon_id)
-        pokemon.is_level_up()
+        Pokemon.objects.get(id=pokemon_id).is_level_up()
     return redirect('pokemon_detail', pokemon_id=pokemon_id)
 
 

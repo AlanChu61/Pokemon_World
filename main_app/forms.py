@@ -12,4 +12,5 @@ class FeedingForm(ModelForm):
 class CapturePokemonForm(ModelForm):
     class Meta:
         model = Pokemon
-        fields = ('name', 'level', 'img', 'ownedby', 'in_pocket')
+        fields = ('pokemon_id', 'name', 'level', 'img',
+                  'ownedby', 'in_pocket', 'evolve_chains')

@@ -12,16 +12,17 @@ class Player(models.Model):
 
 
 class Pokemon(models.Model):
+    pokemon_id = models.IntegerField()
     name = models.CharField(max_length=100)
     img = models.CharField(max_length=250)
     level = models.IntegerField(default=5)
+    evolve_chains = models.JSONField()
     ownedby = models.ForeignKey(User, on_delete=models.CASCADE)
     ownedat = models.DateField(auto_now_add=True)
     is_leveled = models.BooleanField(default=False)
+    ready_to_level_up = models.BooleanField(default=False)
     in_pocket = models.BooleanField(default=True)
     # skills = models.charField(Skill)
-
-    ready_to_level_up = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
