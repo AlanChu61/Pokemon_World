@@ -141,4 +141,28 @@ def signup(request):
 
 
 def store(request):
-    return render(request, 'store/store_view.html', {'title': 'Store'})
+    url = 'https://pokeapi.co/api/v2/item-category/10/'
+    response = requests.get(url)
+    data = response.json()
+    items = []
+    for item in data['items']:
+        item_name = item['name']
+        item_url = item['url']
+        item = fetch_item(item_name, item_url)
+        if item != None:
+            items.append(item)
+    return render(request, 'store/store_view.html', {'title': 'Store', 'items': items})
+
+
+def fetch_item(name, url):
+    # https://pokeapi.co/api/v2/item/80/
+    response = requests.get(url)
+    data = response.json()
+    if data['cost'] and data['sprites']['default']:
+        print(name)
+        item = {
+            'name': name,
+            'cost': data['cost'],
+            'img': data['sprites']['default'],
+        }
+        return item
