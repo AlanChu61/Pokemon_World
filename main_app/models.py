@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 
 class Player(models.Model):
     name = models.CharField(max_length=100)
+    money = models.IntegerField(default=5000)
+    items = models.JSONField()
     ownedby = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):

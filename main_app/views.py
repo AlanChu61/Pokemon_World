@@ -138,3 +138,7 @@ def signup(request):
     form = UserCreationForm()
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/signup.html', context)
+
+
+def store(request):
+    return render(request, 'store/store_view.html', {'title': 'Store'})
