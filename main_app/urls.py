@@ -16,6 +16,8 @@ urlpatterns = [
          views.capture_pokemon, name='capture_pokemon'),
     path('pokemon/<int:pokemon_id>/pokemon_level_up/',
          views.level_up, name='pokemon_level_up'),
+    path('pokemon/<int:pokemon_id>/pokemon_evolve/',
+         views.evolve_pokemon, name='pokemon_evolve'),
     path('pokemon/<int:pokemon_id>/pokemon_pocket_box/',
          views.pokemon_pocket_box, name='pokemon_pocket_box'),
 

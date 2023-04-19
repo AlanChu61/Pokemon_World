@@ -16,15 +16,21 @@
             {% csrf_token %}
             <span class="badge green">Ready to Level Up</span>
           <button type="submit">&uarr;Level Up</button>
-        
       </form>
-      {% else %}
+      {% endif %}
+      {% if pokemon.is_leveled %}
       <span class="badge orange">Already Level Up today</span></p>
       {% endif %}
         {% if pokemon.evolve_chains.min_level %}
         <p>Evolve to <span>{{pokemon.evolve_chains.evole_to}}</span> at LV: {{pokemon.evolve_chains.min_level}}</p>
         {% else %}
+        
         <p>Evolve to <span>{{pokemon.evolve_chains.evole_to}}</span> by using {{pokemon.evolve_chains.item}}</p>
+        {% if pokemon.ready_to_evolve %}
+        <form action="{% url 'pokemon_evolve' pokemon.id %}" method="post">
+          {% csrf_token %}
+          <span class="badge green">Ready to Evolve</span>
+        <button type="submit">Evolve</button> {% endif %}
         {% endif %}
         <p>Owned By: {{ user }}</p>
         <p>Owned Since: {{pokemon.ownedat}}</p>

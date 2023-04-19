@@ -1,12 +1,13 @@
 from django.db import models
 from datetime import date
 from django.contrib.auth.models import User
+import requests
 
 
 class Player(models.Model):
     name = models.CharField(max_length=100)
     money = models.IntegerField(default=5000)
-    items = models.JSONField()
+    items = models.JSONField(default={'thunder-stone': 1})
     ownedby = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -21,9 +22,12 @@ class Pokemon(models.Model):
     evolve_chains = models.JSONField()
     ownedby = models.ForeignKey(User, on_delete=models.CASCADE)
     ownedat = models.DateField(auto_now_add=True)
+    in_pocket = models.BooleanField(default=True)
+    # level up
     is_leveled = models.BooleanField(default=False)
     ready_to_level_up = models.BooleanField(default=False)
-    in_pocket = models.BooleanField(default=True)
+    # evolve
+    ready_to_evolve = models.BooleanField(default=False)
     # skills = models.charField(Skill)
 
     def __str__(self):
@@ -45,6 +49,15 @@ class Pokemon(models.Model):
     def level_up(self):
         self.level += 1
         self.ready_to_level_up = False
+        self.is_leveled = True
+        self.save()
+
+    def evolve(self, evolve_to):
+        self.name = evolve_to
+        url = f'https://pokeapi.co/api/v2/pokemon/{evolve_to}'
+        response = requests.get(url)
+        data = response.json()
+        self.img = data['sprites']['other']['official-artwork']['front_default']
         self.save()
 
 

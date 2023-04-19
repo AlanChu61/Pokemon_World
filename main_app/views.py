@@ -1,5 +1,5 @@
 import requests
-from .models import Pokemon
+from .models import Pokemon, Player
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .forms import FeedingForm, CapturePokemonForm
@@ -25,6 +25,8 @@ def pokemons_view(request):
 def pokemon_detail(request, pokemon_id):
     feeding_form = FeedingForm()
     pokemon = Pokemon.objects.get(id=pokemon_id)
+    print(pokemon.evolve_chains)
+    check_items_evolve(request, pokemon_id)
     return render(request, 'pokemons/pokemon_detail.html', {'pokemon': pokemon, 'title': 'Pokemon Detail', 'user': request.user, 'feeding_form': feeding_form})
 
 
@@ -63,6 +65,32 @@ def check_evolve(pokemon_id):
 
     print(min_level, evole_to, item)
     return {'evole_to': evole_to, 'min_level': min_level, 'item': item}
+
+
+def check_items_evolve(request, pokemon_id):
+    # check pokemon
+    pokemon = Pokemon.objects.get(id=pokemon_id)
+    player = Player.objects.get(ownedby=request.user)
+    items = player.items.keys()
+    required_evolve_item = pokemon.evolve_chains['item']
+    if required_evolve_item in list(items):
+        pokemon.ready_to_evolve = True
+        pokemon.save()
+        print(
+            f"{pokemon} is ready to evolve to {pokemon.evolve_chains['evole_to']}")
+        return True
+    else:
+        return False
+
+
+def evolve_pokemon(request, pokemon_id):
+    pokemon = Pokemon.objects.get(id=pokemon_id)
+    if request.method == 'POST':
+        if pokemon.ready_to_evolve:
+            pokemon.evolve(pokemon.evolve_chains['evole_to'])
+            return redirect('pokemon_detail', pokemon_id=pokemon.id)
+        else:
+            return redirect('pokemon_detail', pokemon_id=pokemon.id)
 
 
 def capture_pokemon(request, pokemon_id):
