@@ -3,11 +3,13 @@ from datetime import date
 from django.contrib.auth.models import User
 import requests
 
+default_items = {'thunder-stone': 1}
+
 
 class Player(models.Model):
     name = models.CharField(max_length=100)
     money = models.IntegerField(default=5000)
-    items = models.JSONField(default={'thunder-stone': 1})
+    items = models.JSONField(default=default_items)
     ownedby = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):

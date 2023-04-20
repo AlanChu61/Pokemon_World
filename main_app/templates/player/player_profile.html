@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}
+<title>{{player.name}}'s profile | Pokemon World</title>
+{% endblock %}
+{% block content %}
+<h1>{{player.name}}'s profile</h1>
+<img src="{{player.img}}" alt="{{player.name}}'s image" width="300" height="300">
+<p>Money: {{player.money}}</p>
+<p>Pokemon:
+{% for pokemon in pokemons_in_pocket %}
+<a href="{% url 'pokemon_detail' pokemon.id %}">
+    <img src="{{pokemon.img}}" alt="{{pokemon.name}}'s image" width="50" height="50"><span>{{pokemon.name}}</span></a>
+{% endfor %}</p>
+<p>Items:
+{% for item, qty in items.items %}
+   <span>{{item}}: {{qty}}</span></a>
+{% endfor %}
+</p>
+</p>
+{% endblock %}

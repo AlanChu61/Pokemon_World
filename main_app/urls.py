@@ -24,6 +24,10 @@ urlpatterns = [
     path('pokemons/<int:pokemon_id>/add_feeding/',
          views.add_feeding, name='add_feeding'),
     path('accounts/signup/', views.signup, name='signup'),
+
+    path('player/create', views.PlayerCreate.as_view(), name='player_create'),
+    path('player/profile', views.player_profile, name='player_profile'),
+
     path('fetch_store', views.store, name='store'),
 
 ]

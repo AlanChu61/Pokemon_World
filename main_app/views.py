@@ -194,3 +194,28 @@ def fetch_item(name, url):
             'img': data['sprites']['default'],
         }
         return item
+
+
+class PlayerCreate(CreateView):
+    model = Player
+    fields = ("name", "money")
+    success_url = "player/player_profile.html"
+    template_name = "player/player_form.html"
+
+    def form_valid(self, form):
+        form.instance.ownedby = self.request.user
+        return super().form_valid(form)
+
+
+def player_profile(request):
+    player = Player.objects.get(ownedby=request.user)
+    pokemons = Pokemon.objects.filter(ownedby=request.user)
+    pokemons_count = pokemons.count()
+    items = {}
+    for item, qty in player.items.items():
+        items[item] = qty
+    print(items)
+    pokemons_in_pocket = Pokemon.objects.filter(
+        ownedby=request.user, in_pocket=True)
+    return render(request, 'player/player_profile.html', {'player': player,  'pokemons': pokemons, 'pokemon_count': pokemons_count,
+                                                          'pokemons_in_pocket': pokemons_in_pocket, 'title': 'Player Profile', 'items': items})
