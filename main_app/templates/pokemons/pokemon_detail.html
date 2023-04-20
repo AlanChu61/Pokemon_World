@@ -21,17 +21,7 @@
       {% if pokemon.is_leveled %}
       <span class="badge orange">Already Level Up today</span></p>
       {% endif %}
-        {% if pokemon.evolve_chains.min_level %}
-        <p>Evolve to <span>{{pokemon.evolve_chains.evole_to}}</span> at LV: {{pokemon.evolve_chains.min_level}}</p>
-        {% else %}
         
-        <p>Evolve to <span>{{pokemon.evolve_chains.evole_to}}</span> by using {{pokemon.evolve_chains.item}}</p>
-        {% if pokemon.ready_to_evolve %}
-        <form action="{% url 'pokemon_evolve' pokemon.id %}" method="post">
-          {% csrf_token %}
-          <span class="badge green">Ready to Evolve</span>
-        <button type="submit">Evolve</button> {% endif %}
-        {% endif %}
         <p>Owned By: {{ user }}</p>
         <p>Owned Since: {{pokemon.ownedat}}</p>
     </div>
@@ -61,9 +51,20 @@
           </table>
         </div>
 </div>
-<div>
-  <h2>Skills</h2>
-</div>
+<h2>Evolution</h2>
+<div class="row">
+<div class="col s6">
+  {% if pokemon.evolve_chains.min_level %}
+        <p>Evolve to <span>{{pokemon.evolve_chains.evole_to}}</span> at LV: {{pokemon.evolve_chains.min_level}}</p>
+        {% else %}
+        <p>Evolve to <span>{{pokemon.evolve_chains.evole_to}}</span> by using {{pokemon.evolve_chains.item}}</p>
+        {% if pokemon.ready_to_evolve %}
+        <form action="{% url 'pokemon_evolve' pokemon.id %}" method="post">
+          {% csrf_token %}
+          <span class="badge green">Ready to Evolve</span>
+        <button type="submit">Evolve</button> {% endif %}
+        {% endif %}
+</div></div>
 <script>
   const dataPickerEl = document.getElementById("id_date");
   const fromSelectEl = document.getElementById("id_meal");

@@ -1,12 +1,19 @@
 {% extends 'base.html' %}
 {% block title %}
-<title> {{title}}| Pokemon World</title>
+<title> {{title}} | Pokemon World</title>
 {% endblock %}
 {% block content %}
+<h2>Evolution</h2>
 {% for item in items %}
-<div class="col s6">
-    <img src="{{item.img}}" alt="{{item.name}}'s image" width="100" height="100">
-    <p>Name: {{item.name}}</p>
-    <p>Cost: {{item.cost}}</p>
+
+    <form action="{% url 'store_purchase' %}" method="post">
+    {% csrf_token %}
+    <img src="{{item.img}}" alt="{{item.name}}'s image" width="50" height="50">
+    <p>{{item.name}} - ${{item.cost}}</p>
+    <input type="hidden" name="name" value="{{item.name}}">
+    <input type="hidden" name="cost" value="{{item.cost}}">
+    <button type="submit">Purchase</button>
+    </form>
+
 {% endfor %}
 {% endblock %}

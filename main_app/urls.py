@@ -28,6 +28,7 @@ urlpatterns = [
     path('player/create', views.PlayerCreate.as_view(), name='player_create'),
     path('player/profile', views.player_profile, name='player_profile'),
 
-    path('fetch_store', views.store, name='store'),
+    path('fetch_store/', views.store, name='store'),
+    path('fetch_store/purchase.', views.store_purchase, name='store_purchase'),
 
 ]

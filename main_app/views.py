@@ -25,8 +25,8 @@ def pokemons_view(request):
 def pokemon_detail(request, pokemon_id):
     feeding_form = FeedingForm()
     pokemon = Pokemon.objects.get(id=pokemon_id)
-    print(pokemon.evolve_chains)
     check_items_evolve(request, pokemon_id)
+    print(pokemon.evolve_chains)
     return render(request, 'pokemons/pokemon_detail.html', {'pokemon': pokemon, 'title': 'Pokemon Detail', 'user': request.user, 'feeding_form': feeding_form})
 
 
@@ -68,16 +68,15 @@ def check_evolve(pokemon_id):
 
 
 def check_items_evolve(request, pokemon_id):
-    # check pokemon
     pokemon = Pokemon.objects.get(id=pokemon_id)
     player = Player.objects.get(ownedby=request.user)
-    items = player.items.keys()
     required_evolve_item = pokemon.evolve_chains['item']
-    if required_evolve_item in list(items):
+    print(list(player.items.keys()))
+    if required_evolve_item in list(player.items.keys()):
         pokemon.ready_to_evolve = True
         pokemon.save()
-        print(
-            f"{pokemon} is ready to evolve to {pokemon.evolve_chains['evole_to']}")
+        # print(
+        #     f"{pokemon} is ready to evolve to {pokemon.evolve_chains['evole_to']}")
         return True
     else:
         return False
@@ -85,12 +84,17 @@ def check_items_evolve(request, pokemon_id):
 
 def evolve_pokemon(request, pokemon_id):
     pokemon = Pokemon.objects.get(id=pokemon_id)
-    if request.method == 'POST':
-        if pokemon.ready_to_evolve:
-            pokemon.evolve(pokemon.evolve_chains['evole_to'])
-            return redirect('pokemon_detail', pokemon_id=pokemon.id)
+    player = Player.objects.get(ownedby=request.user)
+    required_item = pokemon.evolve_chains.get('item')
+    if pokemon.ready_to_evolve:
+        if player.items.get(required_item) == 1:
+            del player.items[required_item]
         else:
-            return redirect('pokemon_detail', pokemon_id=pokemon.id)
+            player.items[request.post.get(required_item)] -= 1
+        pokemon.evolve(pokemon.evolve_chains['evole_to'])
+        pokemon.save()
+        player.save()
+    return redirect('pokemon_detail', pokemon_id=pokemon.id)
 
 
 def capture_pokemon(request, pokemon_id):
@@ -196,6 +200,23 @@ def fetch_item(name, url):
         return item
 
 
+def store_purchase(request):
+    if request.method == 'POST':
+        player = Player.objects.get(ownedby=request.user)
+        item_name = request.POST.get('name')
+        item_cost = request.POST.get('cost')
+        print(item_name, item_cost)
+        try:
+            item_cost = int(item_cost)
+        except (TypeError, ValueError):
+            item_cost = 0
+        if player.money >= item_cost and item_name is not None:
+            player.money -= item_cost
+            player.items[item_name] = player.items.get(item_name, 0) + 1
+            player.save()
+    return redirect('/player/profile')
+
+
 class PlayerCreate(CreateView):
     model = Player
     fields = ("name", "money")
@@ -214,7 +235,7 @@ def player_profile(request):
     items = {}
     for item, qty in player.items.items():
         items[item] = qty
-    print(items)
+    # print(items)
     pokemons_in_pocket = Pokemon.objects.filter(
         ownedby=request.user, in_pocket=True)
     return render(request, 'player/player_profile.html', {'player': player,  'pokemons': pokemons, 'pokemon_count': pokemons_count,
