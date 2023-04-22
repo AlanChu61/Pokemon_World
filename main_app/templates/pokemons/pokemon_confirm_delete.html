@@ -2,9 +2,7 @@
 <title>Release {{pokemon.name}}</title>
 {% endblock %} {% block content %}
 <h4>Are you sure you want to Release {{pokemon.name}} ?</h4>
-Here shows the details of the pokemon...
-{{pokemon.name}} has been with you since {{pokemon.created_at}}.
-It is xxxx days. You can get it back by going to the pokemon center.
+{{pokemon.name}} has been with you since {{pokemon.ownedat}}.
 <form method="POST">
   {% csrf_token %}
   <input type="submit" value="Yes - Release {{pokemon.name}}" class="btn" />

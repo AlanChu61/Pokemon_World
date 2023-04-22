@@ -32,21 +32,22 @@
           <li>
             <a href="{% url 'store' %}">Store</a>
         </li>
-          {% if user.is_authenticated %}
+          
             <li>
               <a href="{% url 'fetch_pokemons' %}">Fetch Pokemons</a>
           </li>
-            
+          {% if user.is_authenticated %}
             <li>
                 <a href="{% url 'pokemons_view' %}">View Pokemons</a>
             </li>
-            
+            {% if user.username == "SATOSHI_TAJIRI" %}
             <li>
               <a href="{% url 'pokemon_create' %}">Create Pokemon</a>
             </li>
-            <li>
+            {% endif %}
+            <!-- <li>
               <a href="{% url 'player_create' %}">Create Player</a>
-            </li>
+            </li> -->
             <li>
               <a href="{% url 'player_profile' %}">Profile</a>
             </li>

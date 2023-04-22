@@ -5,48 +5,56 @@
 {% block content %}
 <body>
    <h1>Pockets</h1>
-   {% for pokemon in pokemons %}
-   {% if pokemon.in_pocket %}
-    <div class="card">
-        <div class="card-content">
-            <a href="{% url 'pokemon_detail' pokemon.id %}">
-                <img src="{{ pokemon.img }}" alt="{{pokemon.name}}'s" width="100" height="100">
-            </a>
-                <div class="card-title">
-                <p>Name: {{ pokemon.name }} </p>
-                <p>Level: {{ pokemon.level }}</p>
-                <p>Owned Since: {{pokemon.ownedat}} </p>
-                <div class="card-action">
-                    <form action="{% url 'pokemon_pocket_box' pokemon.id %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit">Storage</button>
-                    </form>
-                    <a href="{% url 'pokemon_release' pokemon.id %}">Release</a>
-                  </div>
-          </div>
-    </div>
-</div>{% endif %}{% endfor %}
-    <h1>Box</h1>
+
+   <div class="row">
     {% for pokemon in pokemons %}
-   {% if not pokemon.in_pocket %}<div class="card">
-        <div class="card-content">
+    {% if pokemon.in_pocket %}
+    <div class="col s4 card">
             <a href="{% url 'pokemon_detail' pokemon.id %}">
-                <img src="{{ pokemon.img }}" alt="{{pokemon.name}}'s" width="100" height="100">
+                <img class="pokemon-img" src="{{ pokemon.img }}" alt="{{pokemon.name}}'s">
             </a>
-                <div class="card-title">
-                <p>Name: {{ pokemon.name }} </p>
+                <div class="card-content">
+                <p>{{ pokemon.name }}</p>
                 <p>Level: {{ pokemon.level }}</p>
-                <p>Owned Since: {{pokemon.ownedat}} </p>
+                <p class="detail-words">Owned Since: {{pokemon.ownedat}} </p>
+            </div>
+        <div class="card-action">
+                     <form action="{% url 'pokemon_pocket_box' pokemon.id %}" method="post">
+                        {% csrf_token %}
+                        <button class="green" type="submit">Storage</button>
+                    </form>
+                    <a href="{% url 'pokemon_release' pokemon.id %}"><button class="red">Release</button></a>
+                  </div>
+          
+    </div>
+   {% endif %}{% endfor %}
+</div>
+    <h1>Box</h1>
+    <div class="row">
+        {% for pokemon in pokemons %}
+        {% if not pokemon.in_pocket %}
+        <div class="col s4 card">
+                <a href="{% url 'pokemon_detail' pokemon.id %}">
+                    <img class="pokemon-img" src="{{ pokemon.img }}" alt="{{pokemon.name}}'s">
+                </a>
+                    <div class="card-content">
+                    <p>{{ pokemon.name }}</p>
+                    <p>Level: {{ pokemon.level }}</p>
+                    <p class="detail-words">Owned Since: {{pokemon.ownedat}} </p>
+                </div>
                 <div class="card-action">
                     <form action="{% url 'pokemon_pocket_box' pokemon.id %}" method="post">
                         {% csrf_token %}
-                        <button type="submit">WithMe</button>
+                        <button class="yellow" type="submit">With me</button>
                     </form>
-                    <a href="{% url 'pokemon_release' pokemon.id %}">Release</a>
+                    <a href="{% url 'pokemon_release' pokemon.id %}"><button class="red">Release</button></a>
+
                   </div>
-          </div>
+              
+        </div>
+       {% endif %}{% endfor %}
     </div>
-</div>
-    {% endif %}{% endfor %}
+
+
 </body>
 {% endblock %}

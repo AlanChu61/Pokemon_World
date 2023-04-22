@@ -22,6 +22,7 @@ def pokemons_view(request):
     return render(request, 'pokemons/pokemons_view.html', {'pokemons': pokemons, 'title': 'View Your Pokemons'})
 
 
+@login_required
 def pokemon_detail(request, pokemon_id):
     feeding_form = FeedingForm()
     pokemon = Pokemon.objects.get(id=pokemon_id)
@@ -30,6 +31,7 @@ def pokemon_detail(request, pokemon_id):
     return render(request, 'pokemons/pokemon_detail.html', {'pokemon': pokemon, 'title': 'Pokemon Detail', 'user': request.user, 'feeding_form': feeding_form})
 
 
+@login_required
 def level_up(request, pokemon_id):
     pokemon = Pokemon.objects.get(id=pokemon_id)
     if request.method == 'POST':
@@ -39,8 +41,8 @@ def level_up(request, pokemon_id):
 
 def pokemon_pocket_box(request, pokemon_id):
     pokemon = Pokemon.objects.get(id=pokemon_id)
-    print(pokemon.name)
-    print(pokemon.in_pocket)
+    # print(pokemon.name)
+    # print(pokemon.in_pocket)
     if request.method == 'POST':
         if pokemon.in_pocket:
             pokemon.in_pocket = False
@@ -110,7 +112,7 @@ def capture_pokemon(request, pokemon_id):
     new_pokemon = CapturePokemonForm(
         {'pokemon_id': capture_pokemon_id, 'name': name, 'level': level, 'img': img, 'ownedby': ownedby,  'in_pocket': in_pocket, "evolve_chains": evolve_chains})
     new_pokemon.save()
-    return redirect('fetch_pokemons')
+    return redirect('/pokemons/')
 
 
 class PokemonCreate(CreateView):
@@ -186,6 +188,14 @@ def store(request):
     return render(request, 'store/store_view.html', {'title': 'Store', 'items': items})
 
 
+def fetch_item_img(name):
+    url = f'https://pokeapi.co/api/v2/item/{name}/'
+    response = requests.get(url)
+    data = response.json()
+    img = data['sprites']['default']
+    return img
+
+
 def fetch_item(name, url):
     # https://pokeapi.co/api/v2/item/80/
     response = requests.get(url)
@@ -205,7 +215,7 @@ def store_purchase(request):
         player = Player.objects.get(ownedby=request.user)
         item_name = request.POST.get('name')
         item_cost = request.POST.get('cost')
-        print(item_name, item_cost)
+        # print(item_name, item_cost)
         try:
             item_cost = int(item_cost)
         except (TypeError, ValueError):
@@ -220,7 +230,7 @@ def store_purchase(request):
 class PlayerCreate(CreateView):
     model = Player
     fields = ("name", "money")
-    success_url = "player/player_profile.html"
+    success_url = "/player/profile"
     template_name = "player/player_form.html"
 
     def form_valid(self, form):
@@ -229,13 +239,24 @@ class PlayerCreate(CreateView):
 
 
 def player_profile(request):
-    player = Player.objects.get(ownedby=request.user)
+    try:
+        player = Player.objects.get(ownedby=request.user)
+    except Player.DoesNotExist:
+        player = None
+
+    if player == None:
+        return redirect('player_create')
     pokemons = Pokemon.objects.filter(ownedby=request.user)
     pokemons_count = pokemons.count()
-    items = {}
-    for item, qty in player.items.items():
-        items[item] = qty
-    # print(items)
+    items = []
+
+    # print(player.items)
+    for name, qty in player.items.items():
+        item = {}
+        item["name"] = name
+        item["qty"] = qty
+        item["img"] = fetch_item_img(name)
+        items.append(item)
     pokemons_in_pocket = Pokemon.objects.filter(
         ownedby=request.user, in_pocket=True)
     return render(request, 'player/player_profile.html', {'player': player,  'pokemons': pokemons, 'pokemon_count': pokemons_count,

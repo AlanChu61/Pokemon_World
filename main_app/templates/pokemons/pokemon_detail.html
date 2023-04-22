@@ -7,30 +7,28 @@
 <h1>{{pokemon.name}}</h1>
 
 <div class="row">
-    <div class="col s6">
-        <img src="{{pokemon.img}}" alt="{{pokemon.name}}'s image" width="300" height="300">
-        <p>Name: {{pokemon.name}}</p>
-        <p>Level: {{pokemon.level}}</a>
-          {% if pokemon.ready_to_level_up %}
-          <form action="{% url 'pokemon_level_up' pokemon.id %}" method="post">
-            {% csrf_token %}
-            <span class="badge green">Ready to Level Up</span>
-          <button type="submit">&uarr;Level Up</button>
-      </form>
-      {% endif %}
-      {% if pokemon.is_leveled %}
-      <span class="badge orange">Already Level Up today</span></p>
-      {% endif %}
-        
-        <p>Owned By: {{ user }}</p>
-        <p>Owned Since: {{pokemon.ownedat}}</p>
-    </div>
-    <div class="col s6">
+  <div class="col s6">
+    <img class="pokemon-img" src="{{pokemon.img}}" alt="{{pokemon.name}}'s image">
+    <p>Name: {{pokemon.name}}</p>
+    <p style="display: inline-block;">Level: {{pokemon.level}}
+    {% if pokemon.ready_to_level_up %}
+    <form action="{% url 'pokemon_level_up' pokemon.id %}" method="post" style="display: inline-block;">
+    {% csrf_token %}
+  <button class="btn-xsmall" type="submit">&uarr;</button>
+  <span class="badge light-green">Ready to Level Up</span>
+</form>
+{% endif %}
+    </p>
+    <p>Owned By: {{ user }}</p>
+    <p>Owned Since: {{pokemon.ownedat}}</p>
+  </div>
+  
+    <div class="col s4">
       {% if not pokemon.isleveled %}
       <form action="{% url 'add_feeding' pokemon.id %}" method="POST">
         {% csrf_token %}
         {{ feeding_form.as_p }}
-        <input type="submit" value="Add Feeding" class="btn red" />
+        <input class="btn light-blue" type="submit" value="Add Feeding"/>
     </form>   
     {% endif %} 
         <table class="striped">

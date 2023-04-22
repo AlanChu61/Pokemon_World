@@ -8,6 +8,8 @@ default_items = {'thunder-stone': 1}
 
 class Player(models.Model):
     name = models.CharField(max_length=100)
+    img = models.CharField(
+        max_length=250, default="https://www.kocpc.com.tw/wp-content/uploads/2016/09/1473059862-1058abae0dc372f4432cbea7fa123512.jpg")
     money = models.IntegerField(default=5000)
     items = models.JSONField(default=default_items)
     ownedby = models.ForeignKey(User, on_delete=models.CASCADE)

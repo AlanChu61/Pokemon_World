@@ -7,11 +7,14 @@ body {
 *{
     font-family: 'Cute Font', cursive;
 }
+p.detail-font{
+font-size:12px;
+}
 .page-footer {
-    position: fixed;
+    position: relative;
     bottom: 0;
     width: 100%;
-    padding: 5px;
+    padding: 0;
     text-align: center;
   }
 
@@ -22,4 +25,43 @@ body {
     border: 25px;
     justify-content: center;
     align-items: center;
+  }
+  img.player-img {
+    width: 100%;
+    height: 100%;
+    border: 25px;
+    justify-content: center;
+    align-items: center;
+  }
+
+ .pokemon-img, .player-pokemon-img {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+  .player-item-img
+  {
+    display: flex;
+    width: 60%;
+    height: 60%;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  }
+  button.btn-xsmall{
+    font-size: 10px;
+    padding: 0px;
+    margin: 0px;
+    background-color: chartreuse;
+    border-radius: 5px;
+  }
+
+  .item-card,.pokemon-card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }

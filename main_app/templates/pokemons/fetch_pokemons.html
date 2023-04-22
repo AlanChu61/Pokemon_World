@@ -3,7 +3,9 @@
 <title> {{title}}| Pokemon World</title>
 {% endblock %}
 {% block content %}
+<div class="row">
   {% for pokemon in pokemons %}
+  <div class="col s4 card pokemon-card">
   <img src="{{ pokemon.img }}" alt="{{pokemon.name}}'s" width="100" height="100">
   <form action="{% url 'capture_pokemon' pokemon.id %}" method="POST">
       {% csrf_token %}
@@ -11,8 +13,11 @@
           #{{pokemon.id}} {{pokemon.name}}
       </table>
       <input type="hidden" name="pokemon_id" value="{{ pokemon.id }}">
-      <input type="submit" value="Caputed" class="btn green" />
+      {% if user.is_authenticated %}
+      <input type="submit" value="Caputred" class="btn green" />
+      {% endif %}
     </form>
+  </div>
   {% endfor %}
-
+</div>
 {% endblock %}
