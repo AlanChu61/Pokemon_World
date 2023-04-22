@@ -8,7 +8,14 @@
     <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
-  />    
+  />
+  
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cute+Font&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   {% block title %}
 {% endblock %}
@@ -59,10 +66,9 @@
     </header>
     <main class="container">{% block content%} {%endblock%}</main>
     <footer class="page-footer">
-      <p>Super accoutn for testing: </p>
-      <p>username: SATOSHI_TAJIRI</p>
-        <p>pwd: ICreatePokemon</p>
+      <p>Super account for testing ID: SATOSHI_TAJIRI PWD: ICreatePokemon</p>
       <p>Copyright &copy; All Rights Reserved Pokemon World 2023</p>
-    </footer> 
+    </footer>
+     
 </body>
 </html>
