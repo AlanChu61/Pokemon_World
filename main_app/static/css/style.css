@@ -3,15 +3,10 @@ body {
     flex-direction: column;
     min-height: 100vh;
     box-sizing:border-box;
-  }
-*{
     font-family: 'Cute Font', cursive;
-}
-nav ul a {
-  font-size:20px;
-}
+  }
 p.detail-font{
-font-size:12px;
+font-size:16px;
 }
 .page-footer {
     position: relative;
@@ -68,3 +63,8 @@ font-size:12px;
     justify-content: center;
     text-align: center;
   }
+  
+
+*{
+  font-size:20px;
+}
