@@ -7,6 +7,9 @@ body {
 *{
     font-family: 'Cute Font', cursive;
 }
+nav ul a {
+  font-size:20px;
+}
 p.detail-font{
 font-size:12px;
 }
