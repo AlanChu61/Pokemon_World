@@ -9,7 +9,7 @@ p.detail-font{
 font-size:16px;
 }
 .page-footer {
-    position: relative;
+    position: fixed;
     bottom: 0;
     width: 100%;
     padding: 0;
