@@ -5,6 +5,7 @@ body {
     box-sizing:border-box;
     font-family: 'Cute Font', cursive;
   }
+
 p.detail-font{
 font-size:16px;
 }
@@ -15,7 +16,9 @@ font-size:16px;
     padding: 0;
     text-align: center;
   }
-
+div.row{
+  margin-bottom:75px;
+}
 .home-img {
     display: flex;
     width: 100%;
