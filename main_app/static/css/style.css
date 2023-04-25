@@ -65,6 +65,6 @@ font-size:16px;
   }
   
 
-*{
+*, nav ul a, label{
   font-size:20px;
 }
