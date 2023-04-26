@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block title %}
 <title> {{title}}| Pokemon World</title>
 {% endblock %}
@@ -6,8 +6,8 @@
 <div class="row">
   {% for pokemon in pokemons %}
   <div class="col s4 card pokemon-card">
-  <img src="{{ pokemon.img }}" alt="{{pokemon.name}}'s" width="100" height="100">
-  <form action="{% url 'capture_pokemon' pokemon.id %}" method="POST">
+  <img src="{{ pokemon.img }}" alt="{{pokemon.name}}"s" width="100" height="100">
+  <form action="{% url "capture_pokemon" pokemon.id %}" method="POST">
       {% csrf_token %}
       <table>
           #{{pokemon.id}} {{pokemon.name}}

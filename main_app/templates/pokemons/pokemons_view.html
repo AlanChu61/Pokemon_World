@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block title %}
 <title>{{title}} | Pokemon World</title>
 {% endblock %}
@@ -10,8 +10,8 @@
     {% for pokemon in pokemons %}
     {% if pokemon.in_pocket %}
     <div class="col s4 card">
-            <a href="{% url 'pokemon_detail' pokemon.id %}">
-                <img class="pokemon-img" src="{{ pokemon.img }}" alt="{{pokemon.name}}'s">
+            <a href="{% url "pokemon_detail" pokemon.id %}">
+                <img class="pokemon-img" src="{{ pokemon.img }}" alt="{{pokemon.name}}"s">
             </a>
                 <div class="card-content">
                 <p>{{ pokemon.name }}</p>
@@ -19,11 +19,11 @@
                 <p class="detail-words">Owned Since: {{pokemon.ownedat}} </p>
             </div>
         <div class="card-action">
-                     <form action="{% url 'pokemon_pocket_box' pokemon.id %}" method="post">
+                     <form action="{% url "pokemon_pocket_box" pokemon.id %}" method="post">
                         {% csrf_token %}
                         <button class="green" type="submit">Storage</button>
                     </form>
-                    <a href="{% url 'pokemon_release' pokemon.id %}"><button class="red">Release</button></a>
+                    <a href="{% url "pokemon_release" pokemon.id %}"><button class="red">Release</button></a>
                   </div>
           
     </div>
@@ -34,8 +34,8 @@
         {% for pokemon in pokemons %}
         {% if not pokemon.in_pocket %}
         <div class="col s4 card">
-                <a href="{% url 'pokemon_detail' pokemon.id %}">
-                    <img class="pokemon-img" src="{{ pokemon.img }}" alt="{{pokemon.name}}'s">
+                <a href="{% url "pokemon_detail" pokemon.id %}">
+                    <img class="pokemon-img" src="{{ pokemon.img }}" alt="{{pokemon.name}}"s">
                 </a>
                     <div class="card-content">
                     <p>{{ pokemon.name }}</p>
@@ -43,11 +43,11 @@
                     <p class="detail-words">Owned Since: {{pokemon.ownedat}} </p>
                 </div>
                 <div class="card-action">
-                    <form action="{% url 'pokemon_pocket_box' pokemon.id %}" method="post">
+                    <form action="{% url "pokemon_pocket_box" pokemon.id %}" method="post">
                         {% csrf_token %}
                         <button class="yellow" type="submit">With me</button>
                     </form>
-                    <a href="{% url 'pokemon_release' pokemon.id %}"><button class="red">Release</button></a>
+                    <a href="{% url "pokemon_release" pokemon.id %}"><button class="red">Release</button></a>
 
                   </div>
               
