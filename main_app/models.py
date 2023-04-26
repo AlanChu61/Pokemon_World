@@ -3,7 +3,7 @@ from datetime import date
 from django.contrib.auth.models import User
 import requests
 
-default_items = {'thunder-stone': 1}
+default_items = {"thunder-stone": 1}
 
 
 class Player(models.Model):
@@ -58,10 +58,10 @@ class Pokemon(models.Model):
 
     def evolve(self, evolve_to):
         self.name = evolve_to
-        url = f'https://pokeapi.co/api/v2/pokemon/{evolve_to}'
+        url = f"https://pokeapi.co/api/v2/pokemon/{evolve_to}"
         response = requests.get(url)
         data = response.json()
-        self.img = data['sprites']['other']['official-artwork']['front_default']
+        self.img = data["sprites"]["other"]["official-artwork"]["front_default"]
         self.save()
 
 

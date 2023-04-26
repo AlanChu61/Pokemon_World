@@ -4,8 +4,9 @@ body {
     min-height: 100vh;
     font-family: 'Cute Font', cursive;
   }
-main{
+main.container{
   text-align: center;
+  height: 100%;
   margin-bottom: 100px;
 }
 .page-footer {
@@ -73,4 +74,8 @@ main{
 
 *, nav ul a, label{
   font-size:18px;
+}
+.container{
+  display: flex;
+  flex-direction: column;
 }

@@ -153,7 +153,7 @@ def fetch_pokemons(request):
         return render(request, "pokemons/fetch_pokemons.html", {"pokemons": pokemons, "title": "Fetch Pokemons"})
     else:
         pokemons = []
-    for i in range(1, 152):
+    for i in range(1, 60):
         pokemon = fetch_pokemon(i)
         pokemons.append(pokemon)
     request.session["pokemons"] = pokemons

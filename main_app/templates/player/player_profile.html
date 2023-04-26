@@ -1,20 +1,20 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block title %}
-<title>{{player.name}}'s profile | Pokemon World</title>
+<title>{{player.name}}"s profile | Pokemon World</title>
 {% endblock %}
 {% block content %}
-<h1>{{player.name}}'s profile</h1>
+<h1>{{player.name}}"s profile</h1>
 <div class="row">
     <div class="col s6">
-        <img class="player-img" src="{{player.img}}" alt="{{player.name}}'s image" width="300" height="300">
+        <img class="player-img" src="{{player.img}}" alt="{{player.name}}"s image" width="300" height="300">
         <p>Money: {{player.money}}</p>
     </div>
     <div class="col s6">
         <div class="row">
             {% for pokemon in pokemons_in_pocket %}
             <div class="col s4">
-                <a href="{% url 'pokemon_detail' pokemon.id %}">
-                    <img class="player-pokemon-img" src="{{pokemon.img}}" alt="{{pokemon.name}}'s image">
+                <a href="{% url "pokemon_detail" pokemon.id %}">
+                    <img class="player-pokemon-img" src="{{pokemon.img}}" alt="{{pokemon.name}}"s image">
                 </a>
                 <p>{{pokemon.name}}</p>
             </div>
@@ -27,7 +27,7 @@
     <div class="row">
         {% for item in items %}
         <div class="col s3">
-            <img class="player-item-img" src="{{item.img}}" alt="{{item.name}}'s image">
+            <img class="player-item-img" src="{{item.img}}" alt="{{item.name}}"s image">
             <p>{{item.name}}:({{item.qty}})</p>
         </div>
         {% endfor %}
