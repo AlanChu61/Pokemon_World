@@ -53,38 +53,32 @@ def pokemon_pocket_box(request, pokemon_id):
 
 
 def check_evolve(pokemon_id):
-    url = f"https://pokeapi.co/api/v2/pokemon-species/{pokemon_id}"
+    url = f'https://pokeapi.co/api/v2/pokemon-species/{pokemon_id}'
     response = requests.get(url)
-    data = response.json().get("evolution_chain").get("url")
+    data = response.json().get('evolution_chain').get('url')
     data = requests.get(data).json()
     item = None
-    min_level = data["chain"]["evolves_to"][0]["evolution_details"][0]["min_level"]
+    min_level = data['chain']['evolves_to'][0]['evolution_details'][0]['min_level']
     if min_level != None:
-        evole_to = data["chain"]["evolves_to"][0]["species"]["name"]
+        evole_to = data['chain']['evolves_to'][0]['species']['name']
     else:
-        evolves_to = data['chain']['evolves_to']
-        evole_to = evolves_to[0]['species']['name'] if evolves_to else None
-        min_level = evolves_to[0]['evolution_details'][0]['min_level'] if evolves_to else None
-        item = None
-    for detail in evolves_to[0]['evolution_details']:
-        if 'item' in detail:
-            item = detail['item']['name']
-            break
-    # print(evole_to, item)
-    # print(min_level, evole_to, item)
-    return {"evole_to": evole_to, "min_level": min_level, "item": item}
+        evole_to = data['chain']['evolves_to'][0]['evolves_to'][0]['species']['name']
+        item = data['chain']['evolves_to'][0]['evolves_to'][0]['evolution_details'][0]['item']['name']
+
+    print(min_level, evole_to, item)
+    return {'evole_to': evole_to, 'min_level': min_level, 'item': item}
 
 
 def check_items_evolve(request, pokemon_id):
     pokemon = Pokemon.objects.get(id=pokemon_id)
     player = Player.objects.get(ownedby=request.user)
-    required_evolve_item = pokemon.evolve_chains["item"]
-    # print(list(player.items.keys()))
+    required_evolve_item = pokemon.evolve_chains['item']
+    print(list(player.items.keys()))
     if required_evolve_item in list(player.items.keys()):
         pokemon.ready_to_evolve = True
         pokemon.save()
         # print(
-        #     f"{pokemon} is ready to evolve to {pokemon.evolve_chains["evole_to"]}")
+        #     f"{pokemon} is ready to evolve to {pokemon.evolve_chains['evole_to']}")
         return True
     else:
         return False
