@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block title %}
 <title>{{pokemon.name}} | Pokemon World</title>
 {% endblock %}
@@ -8,11 +8,11 @@
 
 <div class="row">
   <div class="col s6">
-    <img class="pokemon-img" src="{{pokemon.img}}" alt="{{pokemon.name}}'s image">
+    <img class="pokemon-img" src="{{pokemon.img}}" alt="{{pokemon.name}}"s image">
     <p>Name: {{pokemon.name}}</p>
     <p style="display: inline-block;">Level: {{pokemon.level}}
     {% if pokemon.ready_to_level_up %}
-    <form action="{% url 'pokemon_level_up' pokemon.id %}" method="post" style="display: inline-block;">
+    <form action="{% url "pokemon_level_up" pokemon.id %}" method="post" style="display: inline-block;">
     {% csrf_token %}
   <button class="btn-xsmall" type="submit">&uarr;</button>
   <span class="badge light-green">Ready to Level Up</span>
@@ -23,9 +23,9 @@
     <p>Owned Since: {{pokemon.ownedat}}</p>
   </div>
   
-    <div class="col s4">
+    <div class="col s6">
       {% if not pokemon.isleveled %}
-      <form action="{% url 'add_feeding' pokemon.id %}" method="POST">
+      <form action="{% url "add_feeding" pokemon.id %}" method="POST">
         {% csrf_token %}
         {{ feeding_form.as_p }}
         <input class="btn light-blue" type="submit" value="Add Feeding"/>
@@ -57,7 +57,7 @@
         {% else %}
         <p>Evolve to <span>{{pokemon.evolve_chains.evole_to}}</span> by using {{pokemon.evolve_chains.item}}</p>
         {% if pokemon.ready_to_evolve %}
-        <form action="{% url 'pokemon_evolve' pokemon.id %}" method="post">
+        <form action="{% url "pokemon_evolve" pokemon.id %}" method="post">
           {% csrf_token %}
           <span class="badge green">Ready to Evolve</span>
         <button type="submit">Evolve</button> {% endif %}

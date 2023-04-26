@@ -6,7 +6,7 @@
 <h2>Evolution</h2>
 <div class="row">
 {% for item in items %}
-<div class="col s4 card item-card">
+<div class="col s3 card item-card">
     <form action="{% url "store_purchase" %}" method="post">
     {% csrf_token %}
     <img src="{{item.img}}" alt="{{item.name}}"s image" width="50" height="50">

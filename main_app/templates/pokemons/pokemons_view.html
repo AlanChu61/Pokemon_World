@@ -19,12 +19,11 @@
                 <p class="detail-words">Owned Since: {{pokemon.ownedat}} </p>
             </div>
         <div class="card-action">
-                     <form action="{% url "pokemon_pocket_box" pokemon.id %}" method="post">
-                        {% csrf_token %}
-                        <button class="green" type="submit">Storage</button>
-                    </form>
-                    <a href="{% url "pokemon_release" pokemon.id %}"><button class="red">Release</button></a>
-                  </div>
+            <form action="{% url "pokemon_pocket_box" pokemon.id %}" method="post">
+                {% csrf_token %}
+                <button class="green" type="submit">Storage</button></form>
+                <a href="{% url "pokemon_release" pokemon.id %}"><button class="red">Release</button></a>
+        </div>
           
     </div>
    {% endif %}{% endfor %}
