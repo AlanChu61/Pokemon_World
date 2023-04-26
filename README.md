@@ -14,9 +14,9 @@ Used: HTML, CSS, JavaScript, Django, Heroku, Materialize, Google Fonts
 
 # Screenshots
 
-![](./imgs/Homepage.png)
-![](./imgs/fetch_pokemon.png)
-![](./imgs/detail_pokemon.png)
+![](./src/Homepage.png)
+![](./src/fetch_pokemon.png)
+![](./src/detail_pokemon.png)
 
 
 # Getting Started:
